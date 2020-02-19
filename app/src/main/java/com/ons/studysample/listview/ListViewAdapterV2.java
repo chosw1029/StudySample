@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * @modified by
  * @updated on
  */
-public class ListViewAdapterV1 extends BaseAdapter {
+public class ListViewAdapterV2 extends BaseAdapter {
 
     private Context context;
 
@@ -30,7 +30,7 @@ public class ListViewAdapterV1 extends BaseAdapter {
      * 따라서 외부에서 Context 를 받아서 이를 이용하도록 합니다.
      * @param context : Activity Context 를 받습니다.
      */
-    ListViewAdapterV1(Context context) {
+    ListViewAdapterV2(Context context) {
         this.context = context;
 
         // 데이터 리스트에 데이터들을 추가합니다.
@@ -91,20 +91,21 @@ public class ListViewAdapterV1 extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         /*
-         * XML 파일을 객체화 ( = 메모리에 올리는, Inflation ) 시키기 위해 LayoutInflater 객체를 가져옵니다.
-         * 여러가지 메소드를 이용해서 가져올 수 있는데 아래와 같이도 가능합니다.
-         * LayoutInflater inflater = LayoutInflater.from(context);
+         * V2 는 메모리 효율을 좋게 하기 위해 나온 방식입니다.
+         * Screen Size 안에 보여질 만큼만 convertView 를 생성하고 나머지는 놀고 있는 convertView 를
+         * 재활용해서 활용하게 됩니다. ( inflate 하는 자체가 리소스 소모가 매우 큰 작업입니다. )
+         *
+         * convertView == null 이라는 의미는 놀고 있는 convertView 가 없다.
+         * 즉, 재활용할 view 가 없다는 의미로 이때는 inflate 를 이용해 view 를 만들어 줍니다.
          */
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if(convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.item_listview, viewGroup, false);
+        }
 
-        // LayoutInflater 를 이용하여 inflate 시켜 XML 의 파일을 View 객체로 변환시킵니다.
-        View view = inflater.inflate(R.layout.item_listview, viewGroup, false);
-
-        // R.layout.item_listview 라는 XML 파일 안에 선언되어 있는 TextView 객체를 가져옵니다.
-        // ( 이미 Inflation 했기 때문에 메모리에 올라가있는 상태라 findViewById 로 찾을 수 있습니다. )
-        TextView cityName = view.findViewById(R.id.cityName);
+        TextView cityName = convertView.findViewById(R.id.cityName);
         cityName.setText(getItem(position));
 
-        return view; // XML 을 Inflate 하여 얻은 View 객체를 반환합니다.
+        return convertView; // XML 을 Inflate 하여 얻은 View 객체를 반환합니다.
     }
 }

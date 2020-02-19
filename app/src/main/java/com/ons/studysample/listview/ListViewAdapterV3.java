@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ons.studysample.R;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  * @modified by
  * @updated on
  */
-public class ListViewAdapterV1 extends BaseAdapter {
+public class ListViewAdapterV3 extends BaseAdapter {
 
     private Context context;
 
@@ -30,7 +31,7 @@ public class ListViewAdapterV1 extends BaseAdapter {
      * 따라서 외부에서 Context 를 받아서 이를 이용하도록 합니다.
      * @param context : Activity Context 를 받습니다.
      */
-    ListViewAdapterV1(Context context) {
+    ListViewAdapterV3(Context context) {
         this.context = context;
 
         // 데이터 리스트에 데이터들을 추가합니다.
@@ -90,21 +91,26 @@ public class ListViewAdapterV1 extends BaseAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        /*
-         * XML 파일을 객체화 ( = 메모리에 올리는, Inflation ) 시키기 위해 LayoutInflater 객체를 가져옵니다.
-         * 여러가지 메소드를 이용해서 가져올 수 있는데 아래와 같이도 가능합니다.
-         * LayoutInflater inflater = LayoutInflater.from(context);
-         */
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewHolder viewHolder;
 
-        // LayoutInflater 를 이용하여 inflate 시켜 XML 의 파일을 View 객체로 변환시킵니다.
-        View view = inflater.inflate(R.layout.item_listview, viewGroup, false);
+        if(convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.item_listview, viewGroup, false);
 
-        // R.layout.item_listview 라는 XML 파일 안에 선언되어 있는 TextView 객체를 가져옵니다.
-        // ( 이미 Inflation 했기 때문에 메모리에 올라가있는 상태라 findViewById 로 찾을 수 있습니다. )
-        TextView cityName = view.findViewById(R.id.cityName);
-        cityName.setText(getItem(position));
+            viewHolder = new ViewHolder();
+            viewHolder.cityImage = convertView.findViewById(R.id.cityImage);
+            viewHolder.cityName = convertView.findViewById(R.id.cityName);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
 
-        return view; // XML 을 Inflate 하여 얻은 View 객체를 반환합니다.
+        viewHolder.cityName.setText(getItem(position));
+
+        return convertView; // XML 을 Inflate 하여 얻은 View 객체를 반환합니다.
+    }
+
+    class ViewHolder {
+        ImageView cityImage;
+        TextView cityName;
     }
 }
