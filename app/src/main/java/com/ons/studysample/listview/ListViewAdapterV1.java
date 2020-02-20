@@ -34,9 +34,11 @@ public class ListViewAdapterV1 extends BaseAdapter {
         this.context = context;
 
         // 데이터 리스트에 데이터들을 추가합니다.
-        dataList.add("NewYork");
-        dataList.add("Seoul");
-        dataList.add("Paris");
+        dataList.add("NewYork01");
+        dataList.add("Seoul01");
+        dataList.add("Paris01");
+        dataList.add("Roma01");
+        dataList.add("LA01");
     }
 
     /**

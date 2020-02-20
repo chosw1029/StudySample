@@ -34,9 +34,11 @@ public class ListViewAdapterV2 extends BaseAdapter {
         this.context = context;
 
         // 데이터 리스트에 데이터들을 추가합니다.
-        dataList.add("NewYork");
-        dataList.add("Seoul");
-        dataList.add("Paris");
+        dataList.add("NewYork02");
+        dataList.add("Seoul02");
+        dataList.add("Paris02");
+        dataList.add("Roma02");
+        dataList.add("LA02");
     }
 
     /**
@@ -103,6 +105,7 @@ public class ListViewAdapterV2 extends BaseAdapter {
             convertView = inflater.inflate(R.layout.item_listview, viewGroup, false);
         }
 
+        // 이제 inflate 가 끝났으면, 원하는 객체를 찾아서 데이터 연동 작업을 해줍니다.
         TextView cityName = convertView.findViewById(R.id.cityName);
         cityName.setText(getItem(position));
 

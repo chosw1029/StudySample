@@ -35,9 +35,11 @@ public class ListViewAdapterV3 extends BaseAdapter {
         this.context = context;
 
         // 데이터 리스트에 데이터들을 추가합니다.
-        dataList.add("NewYork");
-        dataList.add("Seoul");
-        dataList.add("Paris");
+        dataList.add("NewYork03");
+        dataList.add("Seoul03");
+        dataList.add("Paris03");
+        dataList.add("Roma03");
+        dataList.add("LA03");
     }
 
     /**
@@ -91,16 +93,33 @@ public class ListViewAdapterV3 extends BaseAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
+        // ViewHolder 를 이용하기 위한 변수를 선언해줍니다.
         ViewHolder viewHolder;
 
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.item_listview, viewGroup, false);
 
+            /*
+                여기서부터가 V2 와 다른 부분입니다.
+                ViewHolder 를 이용하기 위해 ViewHolder 객체를 만들어 줍니다.
+                만들어 준 후에 ViewHolder 안에 있는 변수들에게 inflate 가 끝난 convertView 를 통해서
+                이미 메모리상에 올라가있는 Widget 들을 ViewHolder 에 할당시켜 줍니다.
+             */
             viewHolder = new ViewHolder();
             viewHolder.cityImage = convertView.findViewById(R.id.cityImage);
             viewHolder.cityName = convertView.findViewById(R.id.cityName);
+
+            // 그런 다음 ViewHolder 객체를 setTag 라는 메소드를 이용하여 convertView 내부에 저장시킵니다.
+            convertView.setTag(viewHolder);
         } else {
+            /*
+                convertView 가 Null 이 아닌 경우 = 재활용 된 경우 -> convertView 안에 저장시켜 놓은
+                ViewHolder 객체를 getTag 라는 메소드로 가져옵니다.
+                getTag() 메소드는 Object 타입을 반환하기에 우리가 setTag() 로 집어넣을 때와 같은
+                타입으로 캐스팅 해주어야 합니다.
+                우리는 setTag 로 ViewHolder 객체를 넘겨줬기에 캐스팅을 ViewHolder 로 하여 받습니다.
+             */
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
@@ -109,6 +128,12 @@ public class ListViewAdapterV3 extends BaseAdapter {
         return convertView; // XML 을 Inflate 하여 얻은 View 객체를 반환합니다.
     }
 
+    /**
+     * ViewHolder 클래스입니다.
+     * 안에 생성한 변수는 ListView 에서 반복적으로 보여주기 위해 Inflate 한 XML 파일 안의 구성 요소들의
+     * 타입에 맞게 생성해주시면 됩니다. ( 꼭 개수가 동일할 필요는 없습니다. )
+     * 이 변수들은 해당 객체의 주소값을 저장해두기 위한 용도로 사용됩니다.
+     */
     class ViewHolder {
         ImageView cityImage;
         TextView cityName;
